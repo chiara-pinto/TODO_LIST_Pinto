@@ -52,4 +52,19 @@ load().then((json) => {
     todos = json.todos;
     render();
 });
- 
+
+const completeTodo = (todo) => {
+    return new Promise((resolve, reject) => {
+        fetch("/todo/complete", {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(todo)
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            resolve(json);
+        })
+    })
+}
