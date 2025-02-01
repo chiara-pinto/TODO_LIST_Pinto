@@ -83,3 +83,11 @@ const deleteTodo = (id) => {
         })
     })
 }
+
+setInterval(() => {
+    load().then((json) => {
+        todos = json.todos;
+        todoInput.value = "";
+        render();
+    });
+}, 30000);
