@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({
 const path = require('path');
 app.use("/", express.static(path.join(__dirname, "public")));
 
-const todos = [];
+let todos = [];
 
 app.post("/todo/add", (req, res) => {
     const todo = req.body.todo;
@@ -22,8 +22,7 @@ app.get("/todo", (req, res) => {
     res.json({todos: todos});
 });
 
-const server = http.createServer(app);
-server.listen(80, () => {
+const server = app.listen(80, () => {
     console.log("- server running");
 });
 
@@ -34,8 +33,8 @@ app.put("/todo/complete", (req, res) => {
             if (element.id === todo.id) {
                 element.completed = true;
             }
-        return element;
-        })
+            return element;
+        });
     } catch (e) {
         console.log(e);
     }
@@ -45,4 +44,4 @@ app.put("/todo/complete", (req, res) => {
 app.delete("/todo/:id", (req, res) => {
     todos = todos.filter((element) => element.id !== req.params.id);
     res.json({result: "Ok"});  
-})
+});
