@@ -68,3 +68,18 @@ const completeTodo = (todo) => {
         })
     })
 }
+
+const deleteTodo = (id) => {
+    return new Promise((resolve, reject) => {
+        fetch("/todo/"+id, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            resolve(json);
+        })
+    })
+}

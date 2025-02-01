@@ -41,3 +41,8 @@ app.put("/todo/complete", (req, res) => {
     }
     res.json({result: "Ok"});
 });
+
+app.delete("/todo/:id", (req, res) => {
+    todos = todos.filter((element) => element.id !== req.params.id);
+    res.json({result: "Ok"});  
+})
