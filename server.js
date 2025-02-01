@@ -26,3 +26,18 @@ const server = http.createServer(app);
 server.listen(80, () => {
     console.log("- server running");
 });
+
+app.put("/todo/complete", (req, res) => {
+    const todo = req.body;
+    try {
+        todos = todos.map((element) => {
+            if (element.id === todo.id) {
+                element.completed = true;
+            }
+        return element;
+        })
+    } catch (e) {
+        console.log(e);
+    }
+    res.json({result: "Ok"});
+});
