@@ -33,3 +33,23 @@ const load = () => {
         })
     })
 }
+
+insertButton.onclick = () => {
+    const todo = {           
+        name: todoInput.value,
+        completed: false
+    }      
+    send({todo: todo}) // 1. invia la nuova Todo
+    .then(() => load()) // 2. caricala nuova lista
+    .then((json) => { 
+        todos = json.todos;
+        todoInput.value = "";
+        render();  // 3. render della nuova lista
+    });
+}
+
+load().then((json) => {
+    todos = json.todos;
+    render();
+});
+ 
