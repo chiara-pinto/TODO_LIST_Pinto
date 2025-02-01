@@ -24,3 +24,12 @@ const send = (todo) => {
     })
 }
  
+const load = () => {
+    return new Promise((resolve, reject) => {
+        fetch("/todo")
+        .then((response) => response.json())
+        .then((json) => {
+            resolve(json); // risposta del server con la lista
+        })
+    })
+}
