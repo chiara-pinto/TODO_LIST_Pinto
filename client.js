@@ -1,12 +1,24 @@
-// definizione di variabili DOM, tra cui un bottone che chiamiamo "insertButton"
+const insertButton = document.getElementById('insertButton'); // Seleziona l'elemento esistente con l'id 'insertButton'
 
 let todos = []; // lista dei task
 
 const render = () => {
+    const todoList = document.getElementById('todoList');
+    todoList.innerHTML = '';
+    todos.forEach((todo, index) => {
+        const li = document.createElement('li');
+        li.textContent = todo.name;
+        li.className = todo.completed ? 'completed' : '';
 
-   // codice che genera l'html da todos
-
-}
+        li.addEventListener('click', () => {
+            completeTodo(todo).then(() => load()).then((json) => {
+                todos = json.todos;
+                render();
+            });
+        });
+        todoList.appendChild(li);
+    });
+};
 
 const send = (todo) => {
     return new Promise((resolve, reject) => {
@@ -20,25 +32,26 @@ const send = (todo) => {
         .then((response) => response.json())
         .then((json) => {
             resolve(json); // risposta del server all'aggiunta
-        })
-    })
-}
- 
+        });
+    });
+};
+
 const load = () => {
     return new Promise((resolve, reject) => {
         fetch("/todo")
         .then((response) => response.json())
         .then((json) => {
             resolve(json); // risposta del server con la lista
-        })
-    })
-}
+        });
+    });
+};
 
 insertButton.onclick = () => {
+    const todoInput = document.getElementById('todoInput'); // Seleziona l'elemento input
     const todo = {           
         name: todoInput.value,
         completed: false
-    }      
+    };
     send({todo: todo}) // 1. invia la nuova Todo
     .then(() => load()) // 2. caricala nuova lista
     .then((json) => { 
@@ -46,7 +59,7 @@ insertButton.onclick = () => {
         todoInput.value = "";
         render();  // 3. render della nuova lista
     });
-}
+};
 
 load().then((json) => {
     todos = json.todos;
@@ -65,9 +78,9 @@ const completeTodo = (todo) => {
         .then((response) => response.json())
         .then((json) => {
             resolve(json);
-        })
-    })
-}
+        });
+    });
+};
 
 const deleteTodo = (id) => {
     return new Promise((resolve, reject) => {
@@ -80,14 +93,14 @@ const deleteTodo = (id) => {
         .then((response) => response.json())
         .then((json) => {
             resolve(json);
-        })
-    })
-}
+        });
+    });
+};
 
 setInterval(() => {
     load().then((json) => {
         todos = json.todos;
-        todoInput.value = "";
+        document.getElementById('todoInput').value = "";
         render();
     });
-}, 30000);
+}, 1800000);
